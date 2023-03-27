@@ -24,5 +24,5 @@ func _on_Enemy_spawn_timer_timeout():
 	$Navigation2D/NavigationPolygonInstance.add_child(enemy)
 	
 func _add_point():
-	$CanvasLayer/Label.kills += 1
+	$CanvasLayer/Kills.kills += 1
 		

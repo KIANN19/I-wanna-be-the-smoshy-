@@ -8,6 +8,7 @@ func _ready():
 
 func _on_Bullet_body_entered(body):
 	if !body.is_in_group("enemy"):
+		emit_signal("Hit")
 		var smoke = BulletSmoke.instance() as Particles2D
 		smoke.position = get_global_position()
 		get_parent().add_child(smoke)

@@ -3,19 +3,21 @@ extends KinematicBody2D
 export var BulletBlood = preload("res://Scenes/BulletBlood.tscn")
 onready var animPlayer = $AnimationPlayer
 onready var sprite = $Sprite
-onready var healthbar = $HealthBar
+onready var healthbar = $TextureProgress
 
 const PLAYE = "Player"
 var movespeed = 300 
 var bullet_speed = 800
-var fire_rate = 0.05
+var fire_rate = 0.15
 
 var hp = 500
 var is_dead = false
 var is_taking_damage = false
 var is_colliding = false
 
+var Attack = preload("res://Scenes/enemy.tscn")
 var bullet = preload("res://Scenes/BULLET.tscn")
+var HealthPickup = preload("res://Scenes/HealthPickup.tscn")
 var can_fire = true
 
 func _ready():
@@ -31,10 +33,12 @@ func _physics_process(delta):
 			pass
 		if hp <= 0:
 			is_dead = true
-			movespeed = Vector2(0, 0)
-			queue_free()
-	
-	
+			get_tree().change_scene("res://Scenes/GameOver.tscn")
+			
+	healthbar.hide()
+	if hp < 500:
+		healthbar.show()
+		
 	var motion = Vector2()
 	
 	if Input.is_action_pressed("Skjut") and can_fire: 
@@ -81,3 +85,12 @@ func _on_Area2D_body_entered(body):
 
 func _on_Area2D_body_exited(body):
 	is_colliding = false
+	
+func pick_up(item_name):
+	if item_name == "HealthPickup":
+			hp += 500
+			if hp > 500:
+				hp = 500
+	elif item_name == "DoubleTap":
+		fire_rate = 0.05
+		
